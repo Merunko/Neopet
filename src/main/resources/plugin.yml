@@ -1,0 +1,20 @@
+name: Neopet
+version: '1.0'
+main: me.merunko.Neopet
+api-version: '1.20'
+authors: [Merunko]
+description: A plugin made for players to submit items and gain points.
+
+commands:
+  neopet:
+    permission: neopet.*
+
+permissions:
+  neopet.*:
+    description: Permission for all Neopet commands.
+    default: op
+    children:
+      neopet.reload:
+        description: Reload the plugin.
+      neopet.open:
+        description: Open submitter GUI.
