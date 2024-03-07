@@ -60,6 +60,6 @@ public final class Neopet extends JavaPlugin {
 
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);
-        getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
+        getServer().getPluginManager().registerEvents(new InventoryClickListener(mainConfig, var, pc), this);
     }
 }
