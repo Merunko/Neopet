@@ -1,25 +1,16 @@
 # Hex color format {121212}This is hex color.
 # Gradient color format {121212>}GrayWhite{<FFFFFF}
 
-instances: # You can have multiple instances of submission. Use '/neopet open <instance name>' to open the item submission GUI.
+instances: # You can have multiple instances of submission. Use '/neopet open <instance name> <player name>' to open the item submission GUI.
   anniversary: # Instance name.
 
-    point-name: "&r{B76C1A>}Anniversary Shard{<92B04B}"
+    point-name: "{B76C1A>}Anniversary Shard{<92B04B}"
 
     gui-title: "{DB9444>}&lAnniversary Submission{<AEDB44}"
-    gui-border: "ORANGE_STAINED_GLASS_PANE"
-    gui-board: "ACACIA_HANGING_SIGN"
+    gui-border: "DIAMOND_HOE:15" # ITEM_ID:CUSTOM_MODEL_DATA
+    gui-board: "ACACIA_HANGING_SIGN:0"
 
-    mmoitems:
-      ARMOR: # (Format) ITEM_CATEGORY:
-        - ARCANE_BOOTS:1000 # (Format) ITEM_ID:POINTS
-        - ARCANE_HELM:1000
-      SWORD:
-        - CUTLASS:1000
-
-    minecraft_items:
-      WHEAT: 20 # (Format) ITEM_NAME: POINTS
-      GOLDEN_CARROT: 50
+    required-permission-to-submit: 'group.tofu'
 
   pekoSubmission:
 
@@ -29,6 +20,4 @@ instances: # You can have multiple instances of submission. Use '/neopet open <i
     gui-border: ""
     gui-board: ""
 
-    mmoitems: []
-
-    minecraft_items: []
+    required-permissions-to-submit: ''

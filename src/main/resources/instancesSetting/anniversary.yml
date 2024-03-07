@@ -1,0 +1,18 @@
+instance-type: contributions
+
+category:
+  cactus: # Category ID
+    name: "{00CB16}&lCactus Contributions"
+
+    stages:
+      '1':
+        required-points: 10000
+      '2':
+        required-points: 50000
+
+    mmo-items:
+      MATERIAL:
+        - SPECIAL_GRADE_CACTUS: 5
+
+    minecraft-items:
+      CACTUS: 1
