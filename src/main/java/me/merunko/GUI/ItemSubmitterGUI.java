@@ -8,7 +8,6 @@ import net.kyori.adventure.text.Component;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -16,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemSubmitterGUI {
+public class ItemSubmitterGUI{
 
     private final MainConfiguration mainConfig;
     private final PoroColor pc;
@@ -33,12 +32,13 @@ public class ItemSubmitterGUI {
         Component title = mainConfig.getTitle(instanceName);
         int slot = 54;
 
-        Inventory inventory = Bukkit.createInventory(new GUIHolder(), slot, title);
+        Inventory inventory = Bukkit.createInventory(new GUIHolder(instanceName), slot, title);
 
-        ItemStack border = new ItemStack(mainConfig.getBorder(instanceName));
+        ItemStack border = new ItemStack(mainConfig.getMaterial(instanceName, "gui-border"));
         ItemMeta borderMeta = border.getItemMeta();
         if (borderMeta != null) {
             borderMeta.displayName(Component.text(""));
+            borderMeta.setCustomModelData(mainConfig.getCustomModelData(instanceName, "gui-border"));
             border.setItemMeta(borderMeta);
         }
 
@@ -58,14 +58,12 @@ public class ItemSubmitterGUI {
             cancelButton.setItemMeta(cancelButtonMeta);
         }
 
-        ItemStack boardSign = new ItemStack(mainConfig.getBoard(instanceName));
+        ItemStack boardSign = new ItemStack(mainConfig.getMaterial(instanceName, "gui-board"));
         ItemMeta boardSignMeta = boardSign.getItemMeta();
         if (boardSignMeta != null) {
-            String name3_temp1 = mainConfig.getPointName(instanceName);
-            String name3_temp2 = name3_temp1.concat("&r{FB5848} = &a0");
-            Component name3 = pc.translate(name3_temp2);
-            ConsoleCommandSender console = Bukkit.getConsoleSender();
-            console.sendMessage(getInstanceName());
+            String name3String = mainConfig.getPointName(instanceName).concat("&r{FB5848} = &a0");
+            Component name3 = pc.translate(name3String);
+            boardSignMeta.setCustomModelData(mainConfig.getCustomModelData(instanceName, "gui-board"));
             boardSignMeta.displayName(name3);
 
             List<Component> lore = new ArrayList<>();
