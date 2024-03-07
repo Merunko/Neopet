@@ -13,6 +13,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Console;
+
 public class Commands implements CommandExecutor {
 
     private final MainConfiguration mainConfig;
@@ -48,8 +50,14 @@ public class Commands implements CommandExecutor {
 
     private void handleReloadCommand(CommandSender sender) {
         if (sender.hasPermission("neopet.reload")) {
-            mainConfig.load();
-            pc.sendMessage(sender, var.getMainConfigReloadSuccessMsg());
+            if (sender instanceof Player) {
+                mainConfig.load();
+                pc.sendMessage(sender, var.getMainConfigReloadSuccessMsg());
+                pc.sendMessage(console, var.getMainConfigReloadSuccessMsg());
+            } else {
+                mainConfig.load();
+                pc.sendMessage(console, var.getMainConfigReloadSuccessMsg());
+            }
 
         } else {
             pc.sendMessage(sender, var.getNoPermissionMsg());
