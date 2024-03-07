@@ -46,54 +46,62 @@ public class MainConfiguration {
 
     public String getPointName(String instance) {
         String key = "instances." + instance + ".point-name";
-        if (config.isString(key)) {
-            return config.getString(key);
-        } else {
-            return "Nameless Point";
+        if (config.contains(key)) {
+            String pointName = config.getString(key);
+            if (pointName != null && !pointName.isEmpty()) {
+                return pointName;
+            }
         }
+        return "Nameless Point";
     }
 
     public Component getTitle(String instance) {
         String key = "instances." + instance + ".gui-title";
-        if (config.isString(key)) {
-            return pc.translate(config.getString(key));
-        } else {
-            return pc.translate("No Title");
+        if (config.contains(key)) {
+            String title = config.getString(key);
+            if (title != null && !title.isEmpty()) {
+                return pc.translate(title);
+            }
         }
+        return pc.translate("No Title");
     }
 
-    public Material getBorder(String instance) {
-        String key = "instances." + instance + ".gui-border";
-        if (config.isString(key)) {
+    public Material getMaterial(String instance, String section) {
+        String key = "instances." + instance + "." + section;
+        if (config.contains(key)) {
             String item = config.getString(key);
-            if (item != null) {
-                return Material.matchMaterial(item);
+            if (item != null && !item.isEmpty()) {
+                String[] parts = item.split(":");
+                if (parts.length >= 1) {
+                    Material material = Material.matchMaterial(parts[0]);
+                    if (material != null) {
+                        return material;
+                    } else {
+                        pc.sendMessage(console, var.invalidMaterialID(parts[0]));
+                    }
+                }
             }
         }
         return Material.AIR;
     }
 
-    public Material getBoard(String instance) {
-        String key = "instances." + instance + ".gui-board";
-        if (config.isString(key)) {
+    public int getCustomModelData(String instance, String section) {
+        String key = "instances." + instance + "." + section;
+        if (config.contains(key)) {
             String item = config.getString(key);
-            if (item != null) {
-                return Material.matchMaterial(item);
-            }
-        }
-        return Material.AIR;
-    }
-
-    public int getMMOItemValue(String itemType, String itemID) {
-        if (config.isList("mmoitems." + itemType)) {
-            List<String> items = config.getStringList("mmoitems." + itemType);
-            for (String item : items) {
+            if (item != null && !item.isEmpty()) {
                 String[] parts = item.split(":");
                 if (parts.length == 2) {
-                    String id = parts[0].trim();
-                    int value = Integer.parseInt(parts[1].trim());
-                    if (id.equals(itemID)) {
-                        return value;
+                    try {
+                        int customModelData = Integer.parseInt(parts[1]);
+                        if (customModelData < 0) {
+                            pc.sendMessage(console, var.negativeCustomModelData(customModelData));
+                        } else {
+                            return customModelData;
+                        }
+
+                    } catch (NumberFormatException e) {
+                        pc.sendMessage(console, var.invalidCustomModelData(parts[1]));
                     }
                 }
             }
@@ -101,14 +109,33 @@ public class MainConfiguration {
         return 0;
     }
 
-    public int getMinecraftItemValue(String itemName) {
-        if (config.isConfigurationSection("minecraft_items")) {
-            String key = "minecraft_items." + itemName;
-            if (config.isInt(key)) {
-                return config.getInt(key);
-            }
+    public String getSubmissionPermissions(String instance) {
+        String key = "instances." + instance + ".required-permission-to-submit";
+        if (config.isString(key)) {
+            return config.getString(key);
+        } else {
+            return null;
         }
-        return 0;
+    }
+
+    public boolean isSubmitPermRequired(String instance) {
+        String key = "instances." + instance + ".required-permission-to-submit";
+        if (config.contains(key)) {
+            String permission = config.getString(key);
+            return permission != null && !permission.isEmpty();
+        }
+        return false;
+    }
+
+    public boolean checkInstanceSettingExistence(String instance) {
+        String filePath = var.getInstanceConfigPath() + instance + ".yml";
+        File file = new File(filePath);
+        if (file.exists()) {
+            return true;
+        } else {
+            pc.sendMessage(console, var.noInstanceSettingFound(instance));
+            return false;
+        }
     }
 
 }
