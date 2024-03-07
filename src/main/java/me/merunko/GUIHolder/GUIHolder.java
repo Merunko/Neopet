@@ -6,10 +6,18 @@ import org.jetbrains.annotations.NotNull;
 
 public class GUIHolder implements InventoryHolder {
 
-    public GUIHolder() {}
+    private final String instance;
+
+    public GUIHolder(String instanceName) {
+        instance = instanceName;
+    }
 
     @Override
     public @NotNull Inventory getInventory() {
         return null;
+    }
+
+    public @NotNull String getInstance() {
+        return instance;
     }
 }
